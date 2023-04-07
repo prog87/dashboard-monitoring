@@ -12,6 +12,7 @@ Modularisasi dengan package
 
 #ini adalah import data yang sesuai
 import gempaterkini
+
 if __name__ == '__main__':
     print("Aplikasi utama")
     result = gempaterkini.akstraksi_data()

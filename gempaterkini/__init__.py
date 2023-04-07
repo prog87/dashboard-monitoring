@@ -1,3 +1,7 @@
+import requests
+from bs4 import BeautifulSoup
+
+
 def akstraksi_data():
     """
     Tanggal: 24 Agustus 2021
@@ -9,19 +13,33 @@ def akstraksi_data():
     Dirasakan: Dirasakan (Skala MMI): II-III Manokwari, II-III Ransiki
     :return:
     """
-    hasil = dict()
-    hasil["tanggal"] = "24 Agustus 2021"
-    hasil["waktu"] = "12:05:52 WIB"
-    hasil["magnitudo"] = 4.0
-    hasil["lokasi"] = {"ls": 1.48, "bt": 134.01}
-    hasil["pusat"] = "Pusat gempa berada di darat 18 km barat laut Ransiki"
-    hasil["dirasakan"] = "Dirasakan (Skala MMI): II-III Manokwari, II-III Ransiki"
+    try:
+        content = requests.get('https://bmkg.go.id')
+    except Exception:
+        return None
+    if content.status_code == 200:
+        print(content.text)
+        # soup = BeautifulSoup(content)
+        # print(soup.prettify())
 
-    return hasil
+        hasil = dict()
+        hasil["tanggal"] = "24 Agustus 2021"
+        hasil["waktu"] = "12:05:52 WIB"
+        hasil["magnitudo"] = 4.0
+        hasil["lokasi"] = {"ls": 1.48, "bt": 134.01}
+        hasil["pusat"] = "Pusat gempa berada di darat 18 km barat laut Ransiki"
+        hasil["dirasakan"] = "Dirasakan (Skala MMI): II-III Manokwari, II-III Ransiki"
+        return hasil
+    else:
+        return None
+
 
 
 
 def tampilkan_data(result):
+    if result is None:
+        print('Tidak bisa menemukan data gempa terkini')
+        return
     print("Gempa Terakhir berdasarkan BMKG")
     print(f"Tanggal {result['tanggal']}")
     print(f"Waktu {result['waktu']}")
@@ -29,3 +47,7 @@ def tampilkan_data(result):
     print(f"Lokasi: LS={result['lokasi']['ls']}, BT={result['lokasi']['bt']}")
     print(f"Pusat {result['pusat']}")
     print(f"Dirasakan {result['dirasakan']}")
+
+if __name__ == '__main__':
+    print('Ini adalah package gempaterkini')
+    print('Hai')
